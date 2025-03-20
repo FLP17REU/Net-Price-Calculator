@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณราคาสุทธิ - 7-Eleven Delivery</title>
+    <script defer>
+        function calculateNetPrice() {
+            let totalSales = Number(document.getElementById("totalSales").value);
+            let excludedAmount = Number(document.getElementById("excludedAmount").value);
+            let selectedDiscount = Number(document.getElementById("selectedDiscount").value);
+            let threshold = selectedDiscount === 50 ? 150 : 300; // กำหนด threshold ตามส่วนลด
+            let upsellAmount = totalSales - excludedAmount >= threshold ? 0 : threshold - (totalSales - excludedAmount);
+            let finalTotal = totalSales - excludedAmount + (upsellAmount > 0 ? upsellAmount : 0) - selectedDiscount;
+            
+            document.getElementById("upsellMessage").innerText = upsellAmount > 0 ? `🔥 แนะนำเพิ่มอีก ${upsellAmount} บาท เพื่อใช้ส่วนลด!` : "";
+            document.getElementById("finalTotal").innerText = `📊 ยอดรวมสุดท้าย: ${finalTotal} บาท`;
+        }
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #FF6000; padding: 20px; text-align: center; color: white; }
+        .container { max-width: 400px; margin: auto; padding: 20px; background: white; border-radius: 10px; color: black; }
+        h2 { color: #008D36; }
+        input, select, button { width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+        button { background-color: #008D36; color: white; font-weight: bold; border: none; cursor: pointer; }
+        button:hover { background-color: #005A24; }
+        #upsellMessage { color: #FF6000; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>คำนวณราคาสุทธิ - 7-Eleven Delivery</h2>
+        <label>💰 ยอดขายเริ่มต้น (บาท)</label>
+        <input type="number" id="totalSales" value="400" oninput="calculateNetPrice()">
+        
+        <label>🚫 ยอดสินค้าที่ไม่ร่วมรายการ (บาท)</label>
+        <input type="number" id="excludedAmount" value="150" oninput="calculateNetPrice()">
+        
+        <p id="upsellMessage"></p>
+        
+        <label>🎟️ เลือกโค้ดส่วนลด</label>
+        <select id="selectedDiscount" onchange="calculateNetPrice()">
+            <option value="50">ลูกค้าใหม่ (NEW) สั่ง 150 ลด 50 บาท</option>
+            <option value="15">วันจันทร์ : โฉบรับร้าน สั่ง 150 บาท 15 บาท</option>
+            <option value="30">วันพุธ : WED30 สั่ง 300 บาท 30 บาท</option>
+            <option value="40">วันเสาร์ : TMD40 สั่ง 300 บาท 40 บาท</option>
+            <option value="30">วันอาทิตย์ : SUN30 สั่ง 300 บาท 30 บาท</option>
+            <option value="0">ไม่มีส่วนลด</option>
+        </select>
+        
+        <h3 id="finalTotal">📊 ยอดรวมสุดท้าย: 270 บาท</h3>
+        <button onclick="alert('บันทึกการขายเรียบร้อย!')">บันทึกการขาย</button>
+    </div>
+</body>
+</html>
